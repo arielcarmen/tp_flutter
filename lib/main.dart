@@ -6,7 +6,7 @@ void main() {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
       useMaterial3: true,
     ),
-    home: HomePage(),
+    home: const HomePage(),
   ));
 }
 
@@ -18,50 +18,60 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String username = "ariels";
+
   String firstname = "";
   String lastname = "";
+  String username = "username";
+  String email = "";
+
   String gender = "m";
   String birthDate = "DateTime(2000)";
+
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
   TextEditingController dateController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController genderController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Appbar"),
+        title: const Text("Hello!"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Container(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)
-                    ),
-                    hintText: 'Entrez votre nom',
-                    labelText: 'Nom',
+      body: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: TextFormField(
+                controller: firstnameController,
+                decoration: const InputDecoration(
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none
                   ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)
+                  ),
+                  hintText: 'Entrez votre nom',
+                  labelText: 'Nom',
                 ),
               ),
-              TextFormField(
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: TextFormField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   filled: true,
@@ -75,35 +85,48 @@ class _HomePageState extends State<HomePage> {
                   labelText: 'Email',
                 ),
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: TextFormField(
+                autofocus: false,
+                controller: dateController,
                 decoration: const InputDecoration(
-                  icon: const Icon(Icons.cake),
-                  hintText: 'Entrez votre date de naissance',
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)
+                  ),
+
                   labelText: 'Date de naissance',
                 ),
                 readOnly: true,
                 onTap: selectDate,
               ),
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: showAlertDialog,
-                          child: const Text('Valider'),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: showAlertDialog,
+                        child: const Text('Valider'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Visibility(
+                            child: CircularProgressIndicator(),
+                          visible: isLoading,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        )
-                      ],
-                    ),
-                  )),
-            ],
-          ),
+                      )
+                    ],
+                  ),
+                )),
+          ],
         ),
       ),
       drawer: Drawer(
@@ -129,6 +152,19 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Paramètres',
+          ),
+        ],
+      ),
     );
   }
 
@@ -148,14 +184,15 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('No'),
+              child: const Text('Non'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Yes'),
+              child: const Text('Oui'),
               onPressed: () {
+                showLoader();
                 Navigator.of(context).pop();
               },
             ),
@@ -178,6 +215,22 @@ class _HomePageState extends State<HomePage> {
         dateController.text = _picked.toString().split(" ")[0];
       });
     }
+  }
+
+  void showLoader() {
+    setState(() {
+      isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 5), (){
+      firstname = firstnameController.text;
+      lastname = lastnameController.text;
+      birthDate = dateController.text;
+      email = emailController.text;
+      setState(() {
+        isLoading = false;
+        username = "$firstname $lastname";
+      });
+    });
   }
 }
 
