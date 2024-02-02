@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   TextEditingController lastnameController = TextEditingController();
   TextEditingController genderController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,87 +45,94 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Hello!"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: TextFormField(
-                controller: firstnameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: TextFormField(
+                  controller: firstnameController,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                    ),
+                    hintText: 'Entrez votre nom',
+                    labelText: 'Nom',
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
-                  hintText: 'Entrez votre nom',
-                  labelText: 'Nom',
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  filled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: TextFormField(
+                  controller: lastnameController,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                    ),
+                    hintText: 'Entrez votre prénom',
+                    labelText: 'Prénom',
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
-                  hintText: 'Entrez votre mail',
-                  labelText: 'Email',
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: TextFormField(
-                autofocus: false,
-                controller: dateController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: TextFormField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                    ),
+                    hintText: 'Entrez votre mail',
+                    labelText: 'Email',
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: TextFormField(
+                  autofocus: false,
+                  controller: dateController,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                    ),
 
-                  labelText: 'Date de naissance',
-                ),
-                readOnly: true,
-                onTap: selectDate,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 20),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: showAlertDialog,
-                        child: const Text('Valider'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Visibility(
-                            child: CircularProgressIndicator(),
-                          visible: isLoading,
-                        ),
-                      )
-                    ],
+                    labelText: 'Date de naissance',
                   ),
-                )),
-          ],
+                  readOnly: true,
+                  onTap: selectDate,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: showAlertDialog,
+                      child: isLoading ? CircularProgressIndicator() : const Text('Valider'),
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
       drawer: Drawer(
@@ -142,9 +148,27 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(
-                Icons.add,
+                Icons.menu,
               ),
-              title: const Text('Page 1'),
+              title: const Text('Menu 1'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.menu,
+              ),
+              title: const Text('Menu 2'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.menu,
+              ),
+              title: const Text('Fleeeeeeeeemme'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -165,20 +189,24 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.remove_red_eye),
+        onPressed: (){},
+      ),
     );
   }
 
   Future showAlertDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog( // <-- SEE HERE
-          title: const Text('Confirmer information'),
+        return AlertDialog(
+          title: const Text('Confirmation'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Are you sure want to confirm?'),
+                Text('Voulez vous confirmer les informations?'),
               ],
             ),
           ),
@@ -230,9 +258,12 @@ class _HomePageState extends State<HomePage> {
         isLoading = false;
         username = "$firstname $lastname";
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Informations mises à jour !"),
+        ),
+      );
     });
   }
 }
-
-
-
