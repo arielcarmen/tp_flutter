@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage> {
   String birthDate = "DateTime(2000)";
   final _formKey = GlobalKey<FormState>();
 
+  bool isLoading = false;
+
   TextEditingController dateController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
@@ -43,19 +45,34 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(
-                  icon: const Icon(Icons.person),
-                  hintText: 'Entrez votre nom',
-                  labelText: 'Nom',
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)
+                    ),
+                    hintText: 'Entrez votre nom',
+                    labelText: 'Nom',
+                  ),
                 ),
               ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                  icon: const Icon(Icons.phone),
-                  hintText: 'Entrez votre prenom',
-                  labelText: 'Prenom',
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)
+                  ),
+                  hintText: 'Entrez votre mail',
+                  labelText: 'Email',
                 ),
               ),
               TextFormField(
@@ -65,13 +82,24 @@ class _HomePageState extends State<HomePage> {
                   hintText: 'Entrez votre date de naissance',
                   labelText: 'Date de naissance',
                 ),
+                readOnly: true,
+                onTap: selectDate,
               ),
               Container(
                 padding: EdgeInsets.only(top: 20),
                   child: Center(
-                    child: ElevatedButton(
-                      onPressed: showAlertDialog,
-                      child: const Text('Confirmer'),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: showAlertDialog,
+                          child: const Text('Valider'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        )
+                      ],
                     ),
                   )),
             ],
