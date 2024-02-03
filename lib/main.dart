@@ -19,10 +19,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  String firstname = "";
-  String lastname = "";
+  String firstname = "firstname";
+  String lastname = "lastname";
   String username = "username";
-  String email = "";
+  String email = "mail@mail.com";
 
   String gender = "m";
   String birthDate = "DateTime(2000)";
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+  bool cardVisible = false;
 
   TextEditingController dateController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Hello!"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: SingleChildScrollView(
+      body: !cardVisible ? SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
@@ -134,6 +135,74 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ) : Card(
+        elevation: 12.0,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Nom:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(
+                    lastname,
+
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Prénom:",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(
+                    firstname,
+
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Email:",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(
+                    email,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Date de naissance:",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(
+                    birthDate,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -190,8 +259,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.remove_red_eye),
-        onPressed: (){},
+        child: cardVisible ? Icon(Icons.format_align_justify) : Icon(Icons.remove_red_eye),
+        onPressed: (){
+          setState(() {
+            cardVisible = !cardVisible;
+          });
+        },
       ),
     );
   }
